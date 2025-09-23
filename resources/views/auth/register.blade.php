@@ -47,7 +47,7 @@
 				<p class="text-gray-500">Get started with your free account</p>
 			</div>
 			<div class="bg-white rounded-xl shadow-md p-8" data-aos="fade-up">
-				<form id="registerForm" method="POST" action="{{ route('register.register', [], true) }}">
+				<form id="registerForm" method="POST" action="{{ secure_url('register') }}">
 					@csrf
 					<div class="grid grid-cols-2 gap-4 mb-5">
 						<div>
