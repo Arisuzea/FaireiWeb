@@ -25,15 +25,19 @@ class ForgotPasswordController extends Controller
         );
 
         if ($status === Password::RESET_LINK_SENT) {
+            // Success: redirect to login with modal
             return redirect()->route('login')->with([
                 'showModal' => true,
                 'modalTitle' => 'Password Reset Link Sent',
-                'modalMessage' => 'A password reset link has been sent to your email. Please check your inbox.'
+                'modalMessage' => 'A password reset link has been sent to your email. Please check your inbox.',
             ]);
         } else {
-            return back()->withErrors(['email' => __($status)]);
+            // Error: stay on the same page with modal
+            return back()->with([
+                'showModal' => true,
+                'modalTitle' => 'Email Not Found',
+                'modalMessage' => 'The email you entered is not registered. Please check your input or register a new account.',
+            ]);
         }
     }
-
-
 }

@@ -1,48 +1,34 @@
- AOS.init();
-        feather.replace();
-        
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Handle registration logic here
-        });
-        
-        // Password strength indicator
-        document.getElementById('password').addEventListener('input', function(e) {
-            const password = e.target.value;
-            const strengthBars = [
-                document.getElementById('strength-1'),
-                document.getElementById('strength-2'),
-                document.getElementById('strength-3'),
-                document.getElementById('strength-4')
-            ];
-            
-            // Reset all bars
-            strengthBars.forEach(bar => {
-                bar.style.backgroundColor = '#e5e7eb';
-            });
-            
-            // Very weak
-            if (password.length > 0) {
-                strengthBars[0].style.backgroundColor = '#FB7185';
-            }
-            
-            // Weak
-            if (password.length >= 6) {
-                strengthBars[1].style.backgroundColor = '#FB7185';
-            }
-            
-            // Medium
-            if (password.length >= 8 && /[A-Z]/.test(password) && /[0-9]/.test(password)) {
-                strengthBars[0].style.backgroundColor = '#F59E0B';
-                strengthBars[1].style.backgroundColor = '#F59E0B';
-                strengthBars[2].style.backgroundColor = '#F59E0B';
-            }
-            
-            // Strong
-            if (password.length >= 10 && /[A-Z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password)) {
-                strengthBars[0].style.backgroundColor = '#84CC16';
-                strengthBars[1].style.backgroundColor = '#84CC16';
-                strengthBars[2].style.backgroundColor = '#84CC16';
-                strengthBars[3].style.backgroundColor = '#84CC16';
-            }
-        });
+AOS.init();
+feather.replace();
+
+// Optional: handle form submission if needed
+document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
+    // You can add custom behavior here if needed
+});
+
+// Modal Functions
+function openModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.classList.remove('hidden');
+}
+
+function closeModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.classList.add('hidden');
+}
+
+// Show flash modal if set in session
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.flashModal && window.flashModal.show) {
+        const modal = document.getElementById(window.flashModal.id);
+        if (!modal) return;
+
+        const titleEl = modal.querySelector('h2');
+        const msgEl = modal.querySelector('p');
+
+        if (titleEl) titleEl.textContent = window.flashModal.title;
+        if (msgEl) msgEl.textContent = window.flashModal.message;
+
+        openModal(window.flashModal.id);
+    }
+});

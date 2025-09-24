@@ -69,7 +69,7 @@
             </div>
             
             <div class="bg-white rounded-xl shadow-md p-8" data-aos="fade-up">
-                <form id="forgotPasswordForm" method="POST" action="{{ secure_url('forgot-password') }}">
+                <form id="forgotPasswordForm" method="POST" action="{{ route('password.email') }}">
                     @csrf
                     <div class="mb-6">
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
@@ -98,7 +98,7 @@
                     </div>
                     
                     <div class="mt-6 text-center">
-                        <a href="{{ route('login') }}" class="w-full inline-flex justify-center items-center py-2 px-4 rounded-md shadow-sm bg-white text-sm font-medium text-primary hover:bg-gray-50 transition duration-200 border border-primary">
+                        <a href="{{ secure_url('login') }}" class="w-full inline-flex justify-center items-center py-2 px-4 rounded-md shadow-sm bg-white text-sm font-medium text-primary hover:bg-gray-50 transition duration-200 border border-primary">
                             <i data-feather="log-in" class="h-4 w-4 mr-2"></i>
                             Sign in to your account
                         </a>
@@ -108,15 +108,13 @@
         </div>
     </div>
 
-    <script>
-        feather.replace();
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true
-        });
+    <!-- Modal -->
+        <x-modal id="mainModal" title="{{ $modalTitle ?? 'Default Title' }}">
+            {{ $modalMessage ?? 'Default message' }}
+        </x-modal>
 
-        @if (session('status'))
+    
+    @if (session('status'))
             <div class="text-green-600 mb-4">{{ session('status') }}</div>
         @endif
 
@@ -125,6 +123,17 @@
                 {{ $errors->first() }}
             </div>
         @endif
+
+    <script>
+        window.flashModal = {
+            show: @json(session('showModal') ?? false),
+            id: 'mainModal',
+            title: @json(session('modalTitle') ?? 'Default Title'),
+            message: @json(session('modalMessage') ?? 'Default message')
+        };
     </script>
+    <script src="{{ secure_asset('js/forgot-password.js') }}"></script>
+
+    
 </body>
 </html>
