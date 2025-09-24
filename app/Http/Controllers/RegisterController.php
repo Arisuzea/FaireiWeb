@@ -25,7 +25,11 @@ class RegisterController extends Controller
             'password'   => Hash::make($request->password),
         ]);
 
-        return redirect()->route('login')->with('success', 'Registration successful! Please log in.');
+        return redirect()->route('login')->with([
+            'showModal' => true,
+            'modalTitle' => 'Registration Complete!',
+            'modalMessage' => 'You have successfully registered! You can now log in.'
+        ]);
 
     }
 }

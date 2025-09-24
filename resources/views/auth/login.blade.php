@@ -36,6 +36,9 @@
     <!-- Navigation -->
     @include('components.nav')
 
+    
+
+
     <div class="min-h-screen flex items-center justify-center p-4 auth-container">
         <div class="w-full max-w-md">
             <div class="text-center mb-8">
@@ -44,14 +47,15 @@
             </div>
             
             <div class="bg-white rounded-xl shadow-md p-8" data-aos="fade-up">
-                <form id="loginForm">
+                <form id="loginForm" method="POST" action="{{ secure_url('login') }}">
+                    @csrf
                     <div class="mb-5">
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i data-feather="mail" class="text-gray-400"></i>
                             </div>
-                            <input type="email" id="email" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 input-focus focus:outline-none transition duration-200" placeholder="your@email.com" required>
+                            <input type="email" id="email" name="email" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 input-focus focus:outline-none transition duration-200" placeholder="your@email.com" required>
                         </div>
                     </div>
                     
@@ -61,16 +65,16 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i data-feather="lock" class="text-gray-400"></i>
                             </div>
-                            <input type="password" id="password" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 input-focus focus:outline-none transition duration-200" placeholder="••••••••" required>
+                            <input type="password" id="password" name="password" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 input-focus focus:outline-none transition duration-200" placeholder="••••••••" required>
                         </div>
                     </div>
                     
                     <div class="flex items-center justify-between mb-6">
                         <div class="flex items-center">
-                            <input id="remember-me" type="checkbox" class="h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                            <input id="remember-me" type="checkbox" name="remember-me" class="h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
                             <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
                         </div>
-                        <a href="{{ route('forgot-password') }}" class="text-sm text-primary hover:text-primary/80 font-medium">Forgot password?</a>
+                        <a href="{{ secure_url('forgot-password') }}" class="text-sm text-primary hover:text-primary/80 font-medium">Forgot password?</a>
                     </div>
                     
                     <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center">
@@ -101,11 +105,25 @@
                 
                 <p class="mt-6 text-center text-sm text-gray-500">
                     Don't have an account? 
-                    <a href="{{ route('register') }}" class="font-medium text-primary hover:text-primary/80">Sign up</a>
+                    <a href="{{ secure_url('register') }}" class="font-medium text-primary hover:text-primary/80">Sign up</a>
                 </p>
             </div>
         </div>
     </div>
+        <!-- Modal -->
+        <x-modal id="mainModal" title="{{ $modalTitle ?? 'Default Title' }}">
+            {{ $modalMessage ?? 'Default message' }}
+        </x-modal>
+
 <script src="{{ secure_asset('js/login.js') }}"></script>
+<script>
+    window.flashModal = {
+        show: @json(session('showModal') ?? false),
+        id: @json(session('modalId') ?? 'mainModal'),
+        title: @json(session('modalTitle') ?? 'Default Title'),
+        message: @json(session('modalMessage') ?? 'Default message')
+    };
+</script>
+
 </body>
 </html>

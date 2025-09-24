@@ -69,14 +69,15 @@
             </div>
             
             <div class="bg-white rounded-xl shadow-md p-8" data-aos="fade-up">
-                <form id="forgotPasswordForm">
+                <form id="forgotPasswordForm" method="POST" action="{{ secure_url('forgot-password') }}">
+                    @csrf
                     <div class="mb-6">
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i data-feather="mail" class="text-gray-400"></i>
                             </div>
-                            <input type="email" id="email" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 input-focus focus:outline-none transition duration-200" placeholder="your@email.com" required>
+                            <input type="email" id="email" name="email" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 input-focus focus:outline-none transition duration-200" placeholder="your@email.com" required>
                         </div>
                     </div>
                     
@@ -115,30 +116,15 @@
             once: true
         });
 
-        // Form submission handling
-        document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            
-            // Here you would typically make an API call to send the reset link
-            // For demo purposes, we'll just show a success message
-            const form = e.target;
-            form.innerHTML = `
-                <div class="text-center py-8">
-                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
-                        <i data-feather="check" class="text-green-600"></i>
-                    </div>
-                    <h3 class="text-lg font-medium text-gray-900 mb-2">Reset link sent!</h3>
-                    <p class="text-sm text-gray-500">We've sent a password reset link to ${email}. Please check your inbox.</p>
-                    <div class="mt-6">
-                        <a href="index.html" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                            Back to Sign In
-                        </a>
-                    </div>
-                </div>
-            `;
-            feather.replace();
-        });
+        @if (session('status'))
+            <div class="text-green-600 mb-4">{{ session('status') }}</div>
+        @endif
+
+        @if ($errors->any())
+            <div class="text-red-600 mb-4">
+                {{ $errors->first() }}
+            </div>
+        @endif
     </script>
 </body>
 </html>
