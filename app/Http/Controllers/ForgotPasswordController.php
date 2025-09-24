@@ -25,14 +25,12 @@ class ForgotPasswordController extends Controller
         );
 
         if ($status === Password::RESET_LINK_SENT) {
-            // Success: redirect to login with modal
             return redirect()->route('login')->with([
                 'showModal' => true,
                 'modalTitle' => 'Password Reset Link Sent',
                 'modalMessage' => 'A password reset link has been sent to your email. Please check your inbox.',
             ]);
         } else {
-            // Error: stay on the same page with modal
             return back()->with([
                 'showModal' => true,
                 'modalTitle' => 'Email Not Found',
